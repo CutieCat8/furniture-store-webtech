@@ -1,0 +1,10 @@
+nina.wood@example.com | Oak@1234
+armin.kline@example.com | Pine#778
+sora.matsu@example.com | Maple$992
+june.hart@example.com | Cedar!451
+lia.ortiz@example.com | Spruce@310
+omar.banks@example.com | Birch#764
+talia.cho@example.com | Ash$207
+riko.abe@example.com | Elm!889
+dara.ng@example.com | Walnut@536
+peter.lane@example.com | Beech#120
