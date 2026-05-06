@@ -413,7 +413,152 @@
 		);
 
 		body.innerHTML = rows;
+
+		var submitButton = document.querySelector('[data-checkout-submit]');
+		var statusEl = document.querySelector('[data-checkout-status]');
+		var emailInput = document.getElementById('c_email_address');
+		var cardInput = document.getElementById('c_card_number');
+
+		if (!submitButton || !statusEl || !emailInput || !cardInput) {
+			return;
+		}
+
+		function setStatus(message, isSuccess) {
+			statusEl.textContent = message || '';
+			statusEl.classList.toggle('is-success', Boolean(isSuccess));
+		}
+
+		function buildCheckoutItems(cartItems) {
+			return cartItems.map(function(item) {
+				var product = productsById[item.id] || {};
+				return {
+					id: item.id,
+					title: product.title || 'Product',
+					price: product.price || 0,
+					quantity: item.qty
+				};
+			});
+		}
+
+		function saveLastOrder(orderPayload, responseData) {
+			var lastFour = String(orderPayload.cardNumber || '').replace(/\D/g, '').slice(-4);
+			var receipt = {
+				orderId: responseData.orderId || 'N/A',
+				email: orderPayload.email,
+				total: responseData.total || 0,
+				items: orderPayload.cartItems || [],
+				createdAt: new Date().toISOString(),
+				cardLastFour: lastFour
+			};
+			localStorage.setItem('furni-last-order', JSON.stringify(receipt));
+		}
+
+		submitButton.addEventListener('click', function(event) {
+			event.preventDefault();
+			setStatus('Placing order...', false);
+
+			var cartItems = getCart();
+			var payload = {
+				cartItems: buildCheckoutItems(cartItems),
+				email: emailInput.value.trim(),
+				cardNumber: cardInput.value.trim()
+			};
+
+			fetch('http://localhost:3000/api/checkout', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(payload)
+			})
+				.then(function(response) {
+					return response.json().catch(function() {
+						return {};
+					}).then(function(data) {
+						return { ok: response.ok, data: data };
+					});
+				})
+				.then(function(result) {
+					if (!result.ok) {
+						var message = result.data.message || 'Checkout failed';
+						if (result.data.errors) {
+							var details = Object.values(result.data.errors).join(' | ');
+							message = message + ' - ' + details;
+						}
+						setStatus(message, false);
+						return;
+					}
+
+					saveLastOrder(payload, result.data || {});
+					// Success: clear cart only after order saved.
+					saveCart([]);
+					updateCartCount();
+					setStatus('Order placed. Redirecting...', true);
+					window.location.href = 'thankyou.html';
+				})
+				.catch(function() {
+					setStatus('Network error. Please try again.', false);
+				});
+		});
 	}
+
+		function setupThankYouReceipt() {
+			var receiptRoot = document.querySelector('[data-receipt]');
+			if (!receiptRoot) {
+				return;
+			}
+
+			var raw = localStorage.getItem('furni-last-order');
+			if (!raw) {
+				return;
+			}
+
+			var receipt = null;
+			try {
+				receipt = JSON.parse(raw);
+			} catch (error) {
+				return;
+			}
+
+			if (!receipt || !receipt.items) {
+				return;
+			}
+
+			var orderIdEl = receiptRoot.querySelector('[data-receipt-order-id]');
+			var dateEl = receiptRoot.querySelector('[data-receipt-date]');
+			var emailEl = receiptRoot.querySelector('[data-receipt-email]');
+			var totalEl = receiptRoot.querySelector('[data-receipt-total]');
+			var itemsEl = receiptRoot.querySelector('[data-receipt-items]');
+			var cardEl = receiptRoot.querySelector('[data-receipt-card]');
+
+			if (orderIdEl) {
+				orderIdEl.textContent = receipt.orderId;
+			}
+			if (dateEl) {
+				dateEl.textContent = new Date(receipt.createdAt).toLocaleString();
+			}
+			if (emailEl) {
+				emailEl.textContent = receipt.email;
+			}
+			if (totalEl) {
+				totalEl.textContent = formatPrice(Number(receipt.total) || 0);
+			}
+			if (cardEl) {
+				cardEl.textContent = receipt.cardLastFour ? '**** **** **** ' + receipt.cardLastFour : 'N/A';
+			}
+
+			if (itemsEl) {
+				itemsEl.innerHTML = receipt.items.map(function(item) {
+					var lineTotal = parsePrice(item.price) * Number(item.quantity || 0);
+					return (
+						'<div class="receipt-row">' +
+							'<span>' + item.title + ' x' + item.quantity + '</span>' +
+							'<span>' + formatPrice(lineTotal) + '</span>' +
+						'</div>'
+					);
+				}).join('');
+			}
+		}
 
 	function setupSearch(products) {
 		var input = document.querySelector('[data-products-search]');
@@ -497,6 +642,7 @@
 	document.addEventListener('DOMContentLoaded', function() {
 		updateCartCount();
 		requestProducts();
+		setupThankYouReceipt();
 	});
 
 	var tinyslider = function() {

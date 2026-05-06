@@ -1,0 +1,122 @@
+[
+  {
+    "orderId": "ord-1778054494764",
+    "email": "sea3731548@gmail.com",
+    "total": 247,
+    "items": [
+      {
+        "id": "p-003",
+        "title": "Ergonomic Chair",
+        "price": "$43.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-004",
+        "title": "Luna Lounge Chair",
+        "price": "$64.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-007",
+        "title": "Sable Dining Chair",
+        "price": "$48.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-006",
+        "title": "Oakwood Armchair",
+        "price": "$92.00",
+        "quantity": 1
+      }
+    ],
+    "createdAt": "2026-05-06T08:01:34.764Z"
+  },
+  {
+    "orderId": "ord-1778054719944",
+    "email": "sea3731548@gmail.com",
+    "total": 401,
+    "items": [
+      {
+        "id": "p-001",
+        "title": "Nordic Chair",
+        "price": "$50.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-002",
+        "title": "Kruzo Aero Chair",
+        "price": "$78.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-006",
+        "title": "Oakwood Armchair",
+        "price": "$92.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-008",
+        "title": "Ivy Accent Chair",
+        "price": "$70.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-014",
+        "title": "Breeze Patio Chair",
+        "price": "$45.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-016",
+        "title": "Mira Accent Chair",
+        "price": "$66.00",
+        "quantity": 1
+      }
+    ],
+    "createdAt": "2026-05-06T08:05:19.944Z"
+  },
+  {
+    "orderId": "ord-1778057207062",
+    "email": "sea3731548@gmail.com",
+    "total": 423,
+    "items": [
+      {
+        "id": "p-003",
+        "title": "Ergonomic Chair",
+        "price": "$43.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-002",
+        "title": "Kruzo Aero Chair",
+        "price": "$78.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-005",
+        "title": "Harbor Side Chair",
+        "price": "$55.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-006",
+        "title": "Oakwood Armchair",
+        "price": "$92.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-014",
+        "title": "Breeze Patio Chair",
+        "price": "$45.00",
+        "quantity": 1
+      },
+      {
+        "id": "p-017",
+        "title": "Horizon Lounge Chair",
+        "price": "$110.00",
+        "quantity": 1
+      }
+    ],
+    "createdAt": "2026-05-06T08:46:47.062Z"
+  }
+]

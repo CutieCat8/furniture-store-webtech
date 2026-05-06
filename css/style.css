@@ -157,6 +157,68 @@ body {
 .login-status.is-success {
   color: #2f7b4a; }
 
+.receipt-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px 22px;
+  border: 1px dashed #c8c8c8;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+  font-family: "Courier New", monospace;
+  color: #2f2f2f; }
+
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px; }
+
+.receipt-title {
+  font-size: 14px; }
+
+.receipt-meta {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #4a4a4a; }
+
+.receipt-divider {
+  border-top: 1px dashed #c8c8c8;
+  margin: 12px 0; }
+
+.receipt-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px; }
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px; }
+
+.receipt-row.total {
+  font-weight: 700;
+  font-size: 13px; }
+
+.receipt-thankyou {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 14px 0 8px;
+  letter-spacing: 2px; }
+
+.receipt-barcode {
+  height: 42px;
+  background: repeating-linear-gradient(
+    90deg,
+    #2f2f2f 0,
+    #2f2f2f 2px,
+    transparent 2px,
+    transparent 4px
+  ); }
+
 .login-panel {
   background: linear-gradient(135deg, #3f584a, #2c3b32);
   color: #f6efe6;

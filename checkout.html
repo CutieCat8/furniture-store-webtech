@@ -153,6 +153,13 @@
 		              </div>
 		            </div>
 
+		            <div class="form-group row mb-4">
+		              <div class="col-md-12">
+		                <label for="c_card_number" class="text-black">Card Number <span class="text-danger">*</span></label>
+		                <input type="text" class="form-control" id="c_card_number" name="c_card_number" placeholder="16-digit card number">
+		              </div>
+		            </div>
+
 		            <div class="form-group">
 		              <label for="c_create_account" class="text-black" data-bs-toggle="collapse" href="#create_an_account" role="button" aria-expanded="false" aria-controls="create_an_account"><input type="checkbox" value="1" id="c_create_account"> Create an account?</label>
 		              <div class="collapse" id="create_an_account">
@@ -313,7 +320,8 @@
 		                </div>
 
 		                <div class="form-group">
-		                  <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.html'">Place Order</button>
+		                  <button class="btn btn-black btn-lg py-3 btn-block" data-checkout-submit>Place Order</button>
+		                  <p class="login-status" data-checkout-status role="status" aria-live="polite"></p>
 		                </div>
 
 		              </div>
