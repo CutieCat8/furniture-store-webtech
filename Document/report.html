@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Furni — Backend API Documentation</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  html, body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #1f2430;
+    font-size: 11pt;
+    line-height: 1.5;
+    margin: 0;
+    background: #ffffff;
+  }
+  .page {
+    page-break-after: always;
+    padding: 6mm 0;
+  }
+  .page:last-child { page-break-after: auto; }
+  h1, h2, h3, h4 { margin: 0 0 8px 0; color: #1a1f2e; }
+  p { margin: 0 0 8px 0; }
+
+  /* ===== Cover ===== */
+  .cover {
+    background: #1f2547;
+    color: #ffffff;
+    padding: 35mm 18mm 30mm 18mm;
+    margin-bottom: 8mm;
+    position: relative;
+    min-height: 165mm;
+    border-radius: 2px;
+  }
+  .cover .badge {
+    position: absolute;
+    top: 18mm;
+    right: 18mm;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #c1e000;
+    border: 5px solid #1f2547;
+    box-shadow: 0 0 0 4px #c1e000;
+  }
+  .cover .badge::after {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: #c8323c;
+  }
+  .cover h1 {
+    color: #ffffff;
+    font-size: 44pt;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.05;
+    margin-bottom: 4px;
+  }
+  .cover h2 {
+    color: #c1e000;
+    font-size: 26pt;
+    font-weight: 800;
+    margin-bottom: 22px;
+  }
+  .cover .sub {
+    color: #cdd2e4;
+    font-size: 11pt;
+    line-height: 1.7;
+  }
+  .infobox {
+    background: #ece9df;
+    padding: 14mm 14mm;
+    margin-top: -1px;
+    border-radius: 2px;
+  }
+  .infobox table { width: 100%; border-collapse: collapse; }
+  .infobox td {
+    padding: 4px 0;
+    vertical-align: top;
+    font-size: 10.5pt;
+  }
+  .infobox td.label {
+    width: 90px;
+    font-weight: 700;
+    color: #6b1f24;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== Section heading ===== */
+  .section-num {
+    font-weight: 700;
+    color: #1a1f2e;
+    font-size: 12pt;
+    margin-bottom: 4px;
+  }
+  .section-title {
+    font-size: 26pt;
+    font-weight: 800;
+    color: #1a1f2e;
+    margin-bottom: 10px;
+  }
+  .section-divider {
+    height: 3px;
+    background: #c8323c;
+    width: 100%;
+    margin-bottom: 18px;
+    border: none;
+  }
+  .section-intro {
+    color: #4a5060;
+    margin-bottom: 18px;
+  }
+
+  h3 {
+    font-size: 14pt;
+    font-weight: 700;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    color: #1a1f2e;
+  }
+  h4 {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #c8323c;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 14px;
+    margin-bottom: 6px;
+  }
+
+  /* ===== Prompt boxes ===== */
+  .prompt-label {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #c8323c;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 16px;
+    margin-bottom: 4px;
+  }
+  .prompt-box {
+    background: #faf2ed;
+    border-left: 4px solid #c8323c;
+    padding: 10px 14px;
+    font-size: 10.5pt;
+    color: #2a2f3d;
+    margin-bottom: 10px;
+    border-radius: 0 2px 2px 0;
+  }
+  .impl-note {
+    font-style: italic;
+    color: #b03a44;
+    font-size: 10pt;
+    margin: 4px 0 14px 0;
+  }
+  .impl-note::before { content: "■ "; }
+
+  /* ===== Tables ===== */
+  table.contract {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 14px 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+  table.contract thead th {
+    background: #2c3252;
+    color: #ffffff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  table.contract tbody td {
+    border: 1px solid #d9d9e0;
+    padding: 8px 10px;
+    vertical-align: top;
+  }
+  table.contract tbody tr:nth-child(even) td { background: #f8f6ef; }
+  table.contract td.k {
+    color: #c8323c;
+    font-weight: 700;
+    width: 28%;
+  }
+  table.contract code, .mono {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 9.5pt;
+    background: rgba(200, 50, 60, 0.06);
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #1a1f2e;
+  }
+  .method-get  { color: #1f7a3a; font-weight: 800; }
+  .method-post { color: #c8323c; font-weight: 800; }
+  .status-ok   { color: #1f7a3a; font-weight: 700; }
+  .status-bad  { color: #c2410c; font-weight: 700; }
+  .status-err  { color: #b91c1c; font-weight: 700; }
+
+  /* ===== Diagram caption + figure ===== */
+  figure {
+    margin: 6px 0 10px 0;
+    page-break-inside: avoid;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #d9d9e0;
+    border-radius: 2px;
+  }
+  figcaption {
+    font-size: 9.5pt;
+    color: #5a5f6e;
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  /* ===== Footer ===== */
+  .footer-bar {
+    position: fixed;
+    bottom: 6mm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 8.5pt;
+    color: #8a8f9c;
+    border-top: 1px solid #e5e5ea;
+    padding-top: 4px;
+  }
+  @media screen {
+    body { background: #e9eaee; padding: 20px; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 14px auto;
+      background: #ffffff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 18mm 16mm;
+    }
+    .footer-bar { display: none; }
+  }
+
+  /* SVG diagram styling */
+  .seq-svg {
+    width: 100%;
+    height: auto;
+    background: #1c2030;
+    border-radius: 2px;
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== PAGE 1 — COVER ============== -->
+<div class="page">
+  <div class="cover">
+    <div class="badge"></div>
+    <h1>Furni Store</h1>
+    <h2>Backend API Documentation</h2>
+    <div class="sub">
+      GET&nbsp;/api/products &nbsp;·&nbsp; POST&nbsp;/api/login &nbsp;·&nbsp; POST&nbsp;/api/register<br/>
+      Furniture E-commerce Platform · Controller · Route · Service Pattern<br/>
+      Node.js · Express · bcryptjs · jsonwebtoken
+    </div>
+  </div>
+  <div class="infobox">
+    <table>
+      <tr><td class="label">PROJECT</td><td>Furni Furniture Online Store</td></tr>
+      <tr><td class="label">MODULE</td><td>Product Catalog · Authentication (Login &amp; Register)</td></tr>
+      <tr><td class="label">STACK</td><td>Node.js · Express 4 · bcryptjs 2 · jsonwebtoken 9 · CORS</td></tr>
+      <tr><td class="label">DATA</td><td>data/json/products.json · users.json · auth_user.json</td></tr>
+      <tr><td class="label">AUTHOR</td><td>Pordee Diew (pordeediew001@gmail.com)</td></tr>
+      <tr><td class="label">DATE</td><td>May 2026</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============== PAGE 2 — GENAI PROMPTS ============== -->
+<div class="page">
+  <div class="section-num">01</div>
+  <div class="section-title">GenAI Prompts</div>
+  <hr class="section-divider"/>
+  <p class="section-intro">
+    The three prompts below were used to generate the products filter, the registration flow,
+    and the login route. They are recorded here verbatim so the generation steps are
+    reproducible and auditable.
+  </p>
+
+  <div class="prompt-label">Prompt 1 — Products Filter (GET /api/products)</div>
+  <div class="prompt-box">
+    You are a backend assistant. Build an Express route for <span class="mono">GET /api/products</span>.
+    The request envelope includes a query parameter: <span class="mono">category</span>.
+    Implement gatekeeper logic: allow only when <span class="mono">category</span> equals
+    <span class="mono">"hat"</span> (case-insensitive). On success, read local
+    <span class="mono">products.json</span>, filter products by category (match in title), and respond
+    with JSON <span class="mono">{ status: "success", data: Product[] }</span>. On failure (gatekeeper
+    or server error), respond with JSON <span class="mono">{ status: "fail", message }</span>. Add brief
+    comments in code explaining envelope, gatekeeper, and package.
+  </div>
+  <p class="impl-note">
+    Implementation note: The gatekeeper rejects any non-"hat" category with a 400. Filtering uses a
+    case-insensitive substring match against <span class="mono">title</span>, so a future
+    <span class="mono">category=chair</span> would also work if the gatekeeper were relaxed.
+  </p>
+
+  <div class="prompt-label">Prompt 2 — User Registration (POST /api/register)</div>
+  <div class="prompt-box">
+    You are a full-stack assistant. Implement user registration. <strong>Backend:</strong> Express
+    <span class="mono">POST /api/register</span>. Expect JSON body
+    <span class="mono">{ name, email, password }</span>. Check if email already exists in
+    <span class="mono">auth_user.json</span>. If exists, return 409 with
+    <span class="mono">{ status: "fail", message }</span>. If new, hash password with bcrypt and store
+    user in <span class="mono">auth_user.json</span>. Return 201
+    <span class="mono">{ status: "success", message }</span>.
+    <strong>Frontend:</strong> <span class="mono">register.js</span> should validate password rules
+    before sending: at least 8 characters, at least 1 uppercase, at least 1 special character
+    <span class="mono">(!@#$%^&amp;*)</span>. Show clear error messages and redirect to login on
+    success. Add brief comments explaining the flow in both route and
+    <span class="mono">register.js</span>.
+  </div>
+  <p class="impl-note">
+    Implementation note: bcryptjs is used with the default cost factor (10). Two gatekeepers run in
+    series — the frontend gatekeeper blocks weak passwords before any network call, and the backend
+    gatekeeper re-validates and checks for duplicates because the client cannot be trusted.
+  </p>
+
+  <div class="prompt-label">Prompt 3 — User Login (POST /api/login)</div>
+  <div class="prompt-box">
+    Act as a Security Engineer. Write a Node.js/Express POST route for
+    <span class="mono">/api/login</span>. Receive <span class="mono">{ email, password }</span> in the
+    request body. If either field is missing, return 400. Look up the user in
+    <span class="mono">data/json/users.json</span> by <span class="mono">username</span> (= email).
+    If the user is not found, return 401 Unauthorized. If found, hash the submitted password with
+    MD5 (assignment requirement) and compare with the stored hash. On mismatch, return 401. On
+    match, sign a JWT containing <span class="mono">{ userId }</span> using
+    <span class="mono">JWT_SECRET</span> from <span class="mono">process.env</span> (fallback
+    <span class="mono">"dev-secret"</span>) with <span class="mono">expiresIn: "1h"</span>, and
+    return <span class="mono">{ status: "success", token }</span>. Wrap the handler in try/catch and
+    return 500 with <span class="mono">{ status: "fail", message }</span> on unexpected errors.
+  </div>
+  <p class="impl-note">
+    Implementation note: MD5 is used here only because the assignment specifies it for the seed
+    <span class="mono">users.json</span> dataset. In production, MD5 is unsuitable for password
+    storage — bcrypt (used in registration) should be the standard. JWTs are signed server-side; the
+    secret must come from an environment variable, never from source code.
+  </p>
+</div>
+
+<!-- ============== PAGE 3 — CONTRACT TABLE ============== -->
+<div class="page">
+  <div class="section-num">02</div>
+  <div class="section-title">API Contract Table</div>
+  <hr class="section-divider"/>
+  <p class="section-intro">
+    All three endpoints exposed by the Furni backend. Each row defines the method, path, request
+    shape, and every possible response status with its payload schema.
+  </p>
+
+  <h3>2.1 Endpoint Overview</h3>
+  <table class="contract">
+    <thead>
+      <tr><th>Method</th><th>Route</th><th>Auth Required</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="method-get">GET</span></td>
+        <td><span class="mono">/api/products</span></td>
+        <td>No</td>
+        <td>List products filtered by <span class="mono">?category=hat</span></td>
+      </tr>
+      <tr>
+        <td><span class="method-post">POST</span></td>
+        <td><span class="mono">/api/login</span></td>
+        <td>No</td>
+        <td>Authenticate user (MD5 + JWT issuance)</td>
+      </tr>
+      <tr>
+        <td><span class="method-post">POST</span></td>
+        <td><span class="mono">/api/register</span></td>
+        <td>No</td>
+        <td>Create new user account (bcrypt hash)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>2.2 GET /api/products — Full Contract</h3>
+  <h4>Request envelope (query string)</h4>
+  <table class="contract">
+    <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Validation Rules</th></tr></thead>
+    <tbody>
+      <tr><td class="k">category</td><td>string</td><td>Yes</td><td>Must equal <span class="mono">"hat"</span> (case-insensitive)</td></tr>
+    </tbody>
+  </table>
+  <h4>Response codes</h4>
+  <table class="contract">
+    <thead><tr><th>Status</th><th>Condition</th><th>Response Body</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="status-ok">200 OK</span></td>
+        <td>Gatekeeper passes; products read successfully</td>
+        <td><span class="mono">{ "status": "success", "data": Product[] }</span></td>
+      </tr>
+      <tr>
+        <td><span class="status-bad">400 Bad Request</span></td>
+        <td>Gatekeeper rejects (category missing or ≠ "hat")</td>
+        <td><span class="mono">{ "status": "fail", "message": "Gatekeeper rejected request" }</span></td>
+      </tr>
+      <tr>
+        <td><span class="status-err">500 Internal Server Error</span></td>
+        <td>products.json read or parse failure</td>
+        <td><span class="mono">{ "status": "fail", "message": "Failed to load products" }</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <h4>Product schema (from products.json)</h4>
+  <table class="contract">
+    <thead><tr><th>Field</th><th>Type</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td class="k">id</td><td>string</td><td><span class="mono">p-001</span></td></tr>
+      <tr><td class="k">href</td><td>string</td><td><span class="mono">cart.html</span></td></tr>
+      <tr><td class="k">image</td><td>string</td><td><span class="mono">images/product-1.png</span></td></tr>
+      <tr><td class="k">title</td><td>string</td><td><span class="mono">Nordic Chair</span></td></tr>
+      <tr><td class="k">price</td><td>string</td><td><span class="mono">$50.00</span></td></tr>
+      <tr><td class="k">icon</td><td>string</td><td><span class="mono">images/cross.svg</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============== PAGE 4 — CONTRACT 2.3 + 2.4 ============== -->
+<div class="page">
+  <h3>2.3 POST /api/register — Full Contract</h3>
+  <h4>Request body (Content-Type: application/json)</h4>
+  <table class="contract">
+    <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Validation Rules</th></tr></thead>
+    <tbody>
+      <tr><td class="k">name</td><td>string</td><td>Yes</td><td>Non-empty after trim</td></tr>
+      <tr><td class="k">email</td><td>string</td><td>Yes</td><td>Used as username; must not exist in <span class="mono">auth_user.json</span></td></tr>
+      <tr><td class="k">password</td><td>string</td><td>Yes</td><td>Min 8 chars · ≥ 1 uppercase · ≥ 1 special <span class="mono">(!@#$%^&amp;*)</span></td></tr>
+    </tbody>
+  </table>
+  <h4>Response codes</h4>
+  <table class="contract">
+    <thead><tr><th>Status</th><th>Condition</th><th>Response Body</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="status-ok">201 Created</span></td>
+        <td>Backend gatekeeper passes, email is new, bcrypt hash written to <span class="mono">auth_user.json</span></td>
+        <td><span class="mono">{ "status": "success", "message": "Registration successful" }</span></td>
+      </tr>
+      <tr>
+        <td><span class="status-bad">400 Bad Request</span></td>
+        <td>Missing field <em>or</em> password fails strength rules</td>
+        <td><span class="mono">{ "status": "fail", "message": "Password must be 8+ chars with 1 uppercase and 1 special (!@#$%^&amp;*)" }</span></td>
+      </tr>
+      <tr>
+        <td><span class="status-bad">409 Conflict</span></td>
+        <td>Email already exists in <span class="mono">auth_user.json</span></td>
+        <td><span class="mono">{ "status": "fail", "message": "Email already registered" }</span></td>
+      </tr>
+      <tr>
+        <td><span class="status-err">500 Internal Server Error</span></td>
+        <td>JSON read/write failure or bcrypt error</td>
+        <td><span class="mono">{ "status": "fail", "message": "Registration failed" }</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <h4>auth_user.json schema</h4>
+  <table class="contract">
+    <thead><tr><th>Field</th><th>Type</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td class="k">id</td><td>string</td><td><span class="mono">au-1714900000000</span></td></tr>
+      <tr><td class="k">name</td><td>string</td><td><span class="mono">Nina Wood</span></td></tr>
+      <tr><td class="k">username</td><td>string</td><td><span class="mono">nina.wood@example.com</span></td></tr>
+      <tr><td class="k">password</td><td>string (bcrypt)</td><td><span class="mono">$2a$10$...</span></td></tr>
+      <tr><td class="k">createdAt</td><td>string (YYYY-MM-DD)</td><td><span class="mono">2026-05-05</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.4 POST /api/login — Full Contract</h3>
+  <h4>Request body (Content-Type: application/json)</h4>
+  <table class="contract">
+    <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Validation Rules</th></tr></thead>
+    <tbody>
+      <tr><td class="k">email</td><td>string</td><td>Yes</td><td>Looked up against <span class="mono">users.json</span> by <span class="mono">username</span></td></tr>
+      <tr><td class="k">password</td><td>string</td><td>Yes</td><td>MD5-hashed server-side, compared with stored hash</td></tr>
+    </tbody>
+  </table>
+  <h4>Response codes</h4>
+  <table class="contract">
+    <thead><tr><th>Status</th><th>Condition</th><th>Response Body</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="status-ok">200 OK</span></td>
+        <td>Email found <em>and</em> MD5 hash matches</td>
+        <td><span class="mono">{ "status": "success", "token": "&lt;JWT&gt;" }</span></td>
+      </tr>
+      <tr>
+        <td><span class="status-bad">400 Bad Request</span></td>
+        <td>Missing email or password</td>
+        <td><span class="mono">{ "status": "fail", "message": "Email and password are required" }</span></td>
+      </tr>
+      <tr>
+        <td><span class="status-bad">401 Unauthorized</span></td>
+        <td>Email not found <em>or</em> hash mismatch (intentionally same message)</td>
+        <td><span class="mono">{ "status": "fail", "message": "Unauthorized" }</span></td>
+      </tr>
+      <tr>
+        <td><span class="status-err">500 Internal Server Error</span></td>
+        <td>users.json read failure or jwt.sign failure</td>
+        <td><span class="mono">{ "status": "fail", "message": "Login failed" }</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============== PAGE 5 — DIAGRAMS: file structure + Products ============== -->
+<div class="page">
+  <div class="section-num">03</div>
+  <div class="section-title">Architecture Diagrams</div>
+  <hr class="section-divider"/>
+  <p class="section-intro">
+    Controller–Route–Service file layout, followed by the contract + sequence diagrams for each
+    endpoint.
+  </p>
+
+  <h3>3.1 Controller–Route–Service File Structure</h3>
+  <table class="contract">
+    <thead>
+      <tr><th>Layer</th><th>File</th><th>Responsibility</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="k">Entry</td><td><span class="mono">src/server.js</span></td><td>Bind to PORT 3000; import <span class="mono">app.js</span></td></tr>
+      <tr><td class="k">Entry</td><td><span class="mono">src/app.js</span></td><td>Express app: JSON body parser, CORS, mount <span class="mono">/api/*</span> routes</td></tr>
+      <tr><td class="k">Route</td><td><span class="mono">src/routes/products.js</span></td><td>Declare <span class="mono">GET /products</span> → controller</td></tr>
+      <tr><td class="k">Route</td><td><span class="mono">src/routes/auth.js</span></td><td>Declare <span class="mono">POST /login</span>, <span class="mono">POST /register</span></td></tr>
+      <tr><td class="k">Controller</td><td><span class="mono">src/controllers/productsController.js</span></td><td>Envelope read · gatekeeper (category=="hat") · package response</td></tr>
+      <tr><td class="k">Controller</td><td><span class="mono">src/controllers/authController.js</span></td><td>Login: MD5 compare + jwt.sign · Register: strength check + bcrypt.hash</td></tr>
+      <tr><td class="k">Service</td><td><span class="mono">src/services/productsService.js</span></td><td>Read <span class="mono">products.json</span> · filter by category in title</td></tr>
+      <tr><td class="k">Service</td><td><span class="mono">src/services/authService.js</span></td><td>Lookup/insert in <span class="mono">users.json</span> &amp; <span class="mono">auth_user.json</span></td></tr>
+      <tr><td class="k">Data</td><td><span class="mono">data/json/products.json</span></td><td>Mock product catalog</td></tr>
+      <tr><td class="k">Data</td><td><span class="mono">data/json/users.json</span></td><td>Seed login users (MD5 hashes)</td></tr>
+      <tr><td class="k">Data</td><td><span class="mono">data/json/auth_user.json</span></td><td>Live-write registered users (bcrypt hashes)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3.2 GET /api/products — Contract &amp; Sequence Diagram</h3>
+  <figure>
+    <img src="Product_filter/contract-and-sequence.png" alt="Products filter contract and sequence diagram"/>
+    <figcaption>
+      Fig 1. Contract table + sequence map for <span class="mono">GET /api/products?category=hat</span>.
+      Browser → Server (envelope &amp; gatekeeper) → Service → JSON file → packaged response.
+    </figcaption>
+  </figure>
+</div>
+
+<!-- ============== PAGE 6 — Register diagrams ============== -->
+<div class="page">
+  <h3>3.3 POST /api/register — Contract &amp; Sequence Diagram</h3>
+  <figure>
+    <img src="Register/Contract Table register.png" alt="Register contract and sequence diagram"/>
+    <figcaption>
+      Fig 2. Contract table + UML sequence for <span class="mono">POST /api/register</span>. Two
+      gatekeepers (frontend strength check, backend duplicate check) precede bcrypt hashing and the
+      JSON write.
+    </figcaption>
+  </figure>
+
+  <h3>3.4 POST /api/register — Activity &amp; Sequence Diagram</h3>
+  <figure>
+    <img src="Register/ActivityAndSequence Diagram.png" alt="Register activity and sequence diagram"/>
+    <figcaption>
+      Fig 3. Activity diagram (left) and full UML sequence (right) for the registration flow. Alt
+      frames cover the 409 duplicate-email branch and the 201 success path.
+    </figcaption>
+  </figure>
+</div>
+
+<!-- ============== PAGE 7 — Login SVG sequence diagram ============== -->
+<div class="page">
+  <h3>3.5 POST /api/login — UML Sequence Diagram</h3>
+  <p class="section-intro">
+    Sequence diagram for the login flow. Yellow numbered tags mark each message step. Alt frames
+    cover the 400 missing-field branch, the 401 user-not-found / hash-mismatch branches, and the
+    200 success path with JWT issuance.
+  </p>
+  <figure>
+    <svg class="seq-svg" viewBox="0 0 920 760" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#7fc8ff"/>
+        </marker>
+        <marker id="arrowRet" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#f47174"/>
+        </marker>
+        <marker id="arrowOk" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#7ee08a"/>
+        </marker>
+      </defs>
+
+      <!-- Actor boxes (top) -->
+      <g font-family="Segoe UI, Arial" font-size="12" fill="#ffffff" text-anchor="middle">
+        <rect x="40"  y="20" width="130" height="44" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="105" y="40">Client</text>
+        <text x="105" y="56" font-size="10" fill="#a9b0d0">(Browser)</text>
+
+        <rect x="210" y="20" width="130" height="44" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="275" y="40">Express</text>
+        <text x="275" y="56" font-size="10" fill="#a9b0d0">Router</text>
+
+        <rect x="380" y="20" width="150" height="44" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="455" y="40">authController</text>
+        <text x="455" y="56" font-size="10" fill="#a9b0d0">(Gatekeeper + Logic)</text>
+
+        <rect x="570" y="20" width="140" height="44" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="640" y="40">authService</text>
+        <text x="640" y="56" font-size="10" fill="#a9b0d0">(Data layer)</text>
+
+        <rect x="750" y="20" width="130" height="44" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="815" y="40">users.json</text>
+        <text x="815" y="56" font-size="10" fill="#a9b0d0">(Mock DB)</text>
+      </g>
+
+      <!-- Lifelines -->
+      <g stroke="#4a5078" stroke-dasharray="3 4">
+        <line x1="105" y1="64" x2="105" y2="730"/>
+        <line x1="275" y1="64" x2="275" y2="730"/>
+        <line x1="455" y1="64" x2="455" y2="730"/>
+        <line x1="640" y1="64" x2="640" y2="730"/>
+        <line x1="815" y1="64" x2="815" y2="730"/>
+      </g>
+
+      <!-- Section bands -->
+      <g font-family="Segoe UI, Arial" font-size="11" fill="#ffd16b" font-weight="700">
+        <rect x="20" y="80"  width="880" height="20" fill="#262b44"/>
+        <text x="30" y="95">1. Client submits credentials</text>
+
+        <rect x="20" y="160" width="880" height="20" fill="#262b44"/>
+        <text x="30" y="175">2. Gatekeeper — required fields</text>
+
+        <rect x="20" y="260" width="880" height="20" fill="#262b44"/>
+        <text x="30" y="275">3. Lookup user in mock DB</text>
+
+        <rect x="20" y="430" width="880" height="20" fill="#262b44"/>
+        <text x="30" y="445">4. MD5 password compare + JWT issuance</text>
+      </g>
+
+      <!-- Step arrows -->
+      <g font-family="Segoe UI, Arial" font-size="10.5" fill="#e8ecff">
+        <!-- Step 1: Client -> Router -->
+        <line x1="105" y1="118" x2="270" y2="118" stroke="#7fc8ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="187" y="113" text-anchor="middle">POST /api/login { email, password }</text>
+        <circle cx="118" cy="118" r="9" fill="#ffd16b"/>
+        <text x="118" y="122" text-anchor="middle" font-size="10" fill="#1c2030" font-weight="700">1</text>
+
+        <!-- Step 1b: Router -> Controller (forward) -->
+        <line x1="275" y1="140" x2="448" y2="140" stroke="#7fc8ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="362" y="135" text-anchor="middle">forward to authController.login</text>
+        <circle cx="288" cy="140" r="9" fill="#ffd16b"/>
+        <text x="288" y="144" text-anchor="middle" font-size="10" fill="#1c2030" font-weight="700">2</text>
+
+        <!-- Alt: missing fields -->
+        <rect x="380" y="195" width="180" height="50" fill="none" stroke="#f47174" stroke-dasharray="4 3"/>
+        <text x="390" y="210" fill="#f47174" font-weight="700">alt [email or password missing]</text>
+        <line x1="448" y1="230" x2="112" y2="230" stroke="#f47174" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowRet)"/>
+        <text x="280" y="225" text-anchor="middle" fill="#f47174">400 { status:"fail", message:"Email and password are required" }</text>
+
+        <!-- Step 3: Controller -> Service -->
+        <line x1="455" y1="298" x2="633" y2="298" stroke="#7fc8ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="544" y="293" text-anchor="middle">findUserByEmail(email)</text>
+        <circle cx="468" cy="298" r="9" fill="#ffd16b"/>
+        <text x="468" y="302" text-anchor="middle" font-size="10" fill="#1c2030" font-weight="700">3</text>
+
+        <!-- Step 4: Service -> users.json -->
+        <line x1="640" y1="320" x2="808" y2="320" stroke="#7fc8ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="724" y="315" text-anchor="middle">fs.readFile(users.json)</text>
+        <circle cx="653" cy="320" r="9" fill="#ffd16b"/>
+        <text x="653" y="324" text-anchor="middle" font-size="10" fill="#1c2030" font-weight="700">4</text>
+
+        <!-- return: users.json -> Service -->
+        <line x1="815" y1="342" x2="647" y2="342" stroke="#7fc8ff" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+        <text x="731" y="337" text-anchor="middle" fill="#a9b0d0">users[ ]</text>
+
+        <!-- return: Service -> Controller (user or null) -->
+        <line x1="640" y1="365" x2="462" y2="365" stroke="#7fc8ff" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+        <text x="551" y="360" text-anchor="middle" fill="#a9b0d0">user record or null</text>
+
+        <!-- Alt: user not found -->
+        <rect x="380" y="380" width="180" height="40" fill="none" stroke="#f47174" stroke-dasharray="4 3"/>
+        <text x="390" y="395" fill="#f47174" font-weight="700">alt [user === null]</text>
+        <line x1="448" y1="412" x2="112" y2="412" stroke="#f47174" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowRet)"/>
+        <text x="280" y="407" text-anchor="middle" fill="#f47174">401 { status:"fail", message:"Unauthorized" }</text>
+
+        <!-- Step 5: Controller computes MD5 -->
+        <path d="M 455 470 q 50 -20 0 -40" fill="none" stroke="#7fc8ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="495" y="455" fill="#e8ecff">crypto.createHash("md5").update(password).digest("hex")</text>
+        <circle cx="468" cy="470" r="9" fill="#ffd16b"/>
+        <text x="468" y="474" text-anchor="middle" font-size="10" fill="#1c2030" font-weight="700">5</text>
+
+        <!-- Alt: hash mismatch -->
+        <rect x="380" y="500" width="180" height="40" fill="none" stroke="#f47174" stroke-dasharray="4 3"/>
+        <text x="390" y="515" fill="#f47174" font-weight="700">alt [submittedHash !== user.password]</text>
+        <line x1="448" y1="532" x2="112" y2="532" stroke="#f47174" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowRet)"/>
+        <text x="280" y="527" text-anchor="middle" fill="#f47174">401 { status:"fail", message:"Unauthorized" }</text>
+
+        <!-- Step 6: Controller signs JWT (self) -->
+        <path d="M 455 600 q 50 -20 0 -40" fill="none" stroke="#7ee08a" stroke-width="1.5" marker-end="url(#arrowOk)"/>
+        <text x="500" y="585" fill="#7ee08a">jwt.sign({ userId }, JWT_SECRET, { expiresIn:"1h" })</text>
+        <circle cx="468" cy="600" r="9" fill="#7ee08a"/>
+        <text x="468" y="604" text-anchor="middle" font-size="10" fill="#1c2030" font-weight="700">6</text>
+
+        <!-- Step 7: Controller -> Router -> Client (success) -->
+        <line x1="448" y1="650" x2="282" y2="650" stroke="#7ee08a" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowOk)"/>
+        <text x="365" y="645" text-anchor="middle" fill="#7ee08a">200 { status:"success", token:"&lt;JWT&gt;" }</text>
+        <line x1="270" y1="678" x2="112" y2="678" stroke="#7ee08a" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowOk)"/>
+        <text x="190" y="673" text-anchor="middle" fill="#7ee08a">localStorage.setItem("authToken", token)</text>
+        <circle cx="438" cy="650" r="9" fill="#7ee08a"/>
+        <text x="438" y="654" text-anchor="middle" font-size="10" fill="#1c2030" font-weight="700">7</text>
+      </g>
+
+      <!-- Bottom actor boxes -->
+      <g font-family="Segoe UI, Arial" font-size="12" fill="#ffffff" text-anchor="middle">
+        <rect x="40"  y="710" width="130" height="30" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="105" y="730">Client</text>
+        <rect x="210" y="710" width="130" height="30" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="275" y="730">Express Router</text>
+        <rect x="380" y="710" width="150" height="30" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="455" y="730">authController</text>
+        <rect x="570" y="710" width="140" height="30" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="640" y="730">authService</text>
+        <rect x="750" y="710" width="130" height="30" rx="3" fill="#2c3252" stroke="#5a6390"/>
+        <text x="815" y="730">users.json</text>
+      </g>
+    </svg>
+    <figcaption>
+      Fig 4. POST /api/login sequence — Client → Router → authController (gatekeeper + MD5 compare)
+      → authService → users.json. Red dashed returns are failure paths (400 / 401); green dashed
+      returns are the success path (200) carrying the signed JWT.
+    </figcaption>
+  </figure>
+</div>
+
+<!-- ============== PAGE 8 — Security decisions ============== -->
+<div class="page">
+  <h3>3.6 Security &amp; Design Decisions</h3>
+  <table class="contract">
+    <thead><tr><th>Decision</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="k">Two gatekeepers for register (frontend + backend)</td>
+        <td>The frontend gatekeeper (<span class="mono">register.js</span>) gives instant feedback and
+        avoids unnecessary requests, but the client cannot be trusted — the backend re-validates the
+        same rules and additionally checks for duplicate email.</td>
+      </tr>
+      <tr>
+        <td class="k">bcrypt for register, MD5 for login (legacy seed data)</td>
+        <td>New accounts in <span class="mono">auth_user.json</span> use bcrypt with cost factor 10
+        (slow + per-hash salt → resists brute-force). The seed dataset
+        <span class="mono">users.json</span> uses MD5 only because the assignment specifies it; this
+        is documented as a known weakness, not a recommendation.</td>
+      </tr>
+      <tr>
+        <td class="k">Same 401 message for "user not found" and "wrong password"</td>
+        <td>Returning distinct messages would let an attacker enumerate which emails are registered.
+        A single generic <span class="mono">"Unauthorized"</span> response leaks nothing.</td>
+      </tr>
+      <tr>
+        <td class="k">JWT payload contains only <span class="mono">{ userId }</span></td>
+        <td>JWTs are Base64-decodable by anyone holding the token. Sensitive fields (password hash,
+        email, address) must never appear in the payload.</td>
+      </tr>
+      <tr>
+        <td class="k"><span class="mono">JWT_SECRET</span> from <span class="mono">process.env</span></td>
+        <td>Hardcoding secrets in source exposes them in git history. The
+        <span class="mono">"dev-secret"</span> fallback is for local dev only and must be overridden
+        in any deployed environment.</td>
+      </tr>
+      <tr>
+        <td class="k">CORS allowlist (<span class="mono">127.0.0.1:5500</span> / <span class="mono">localhost:5500</span>)</td>
+        <td>The Live Server origin is explicitly whitelisted instead of using
+        <span class="mono">"*"</span>. This blocks cross-origin requests from arbitrary sites
+        attempting to call the API on a logged-in user's behalf.</td>
+      </tr>
+      <tr>
+        <td class="k">Envelope / Gatekeeper / Package vocabulary in code comments</td>
+        <td>Each controller and service carries one-line comments labelling these three phases.
+        This matches the conceptual model taught in the WebTech course and makes the intent of each
+        block visible at a glance during code review.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 24px; font-size: 9.5pt; color: #5a5f6e; text-align: center;">
+    — End of report —
+  </p>
+</div>
+
+<div class="footer-bar">Furni Store — Backend API Documentation · Pordee Diew · May 2026</div>
+
+</body>
+</html>

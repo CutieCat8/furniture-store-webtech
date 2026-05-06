@@ -2,70 +2,70 @@
   {
     "id": "u-001",
     "username": "nina.wood@example.com",
-    "password": "$2b$10$tm.wY/Tva0lxcA3LdZ/vg.my6oprwjkf6tISv3eV9fKPn4NzCA9We",
+    "password": "85c2dc37ff5785bbf78658fdd14d0094",
     "firstName": "Nina",
     "registeredAt": "2025-10-05"
   },
   {
     "id": "u-002",
     "username": "armin.kline@example.com",
-    "password": "$2b$10$mdmFLjgAGIO9B5r.Eq4tV.nnXUqVkB7.ppRZISPrJnJoKnzGntBa.",
+    "password": "ee301d83b76301ed99159f0f1c5e7764",
     "firstName": "Armin",
     "registeredAt": "2025-11-18"
   },
   {
     "id": "u-003",
     "username": "sora.matsu@example.com",
-    "password": "$2b$10$n96Ciwlqb4Kobk3UcNcAv.UPtuxNyA5OxAuITmJQ/fvmpH0uKF.za",
+    "password": "127baf83c88169183e304e0cebdaa5b6",
     "firstName": "Sora",
     "registeredAt": "2025-12-01"
   },
   {
     "id": "u-004",
     "username": "june.hart@example.com",
-    "password": "$2b$10$pRMq9wJ.LFjNz6WFxLpVb.zgJA6SVa.thgSBFo3uGDFqNyzy0Vp9a",
+    "password": "71253f826417157c371b2ae464e7bb8f",
     "firstName": "June",
     "registeredAt": "2026-01-09"
   },
   {
     "id": "u-005",
     "username": "lia.ortiz@example.com",
-    "password": "$2b$10$bmRvTmcMyhV/DfwLNJNvd.5JyEFGLljpPqP9ds/USv1oiKlVxinfm",
+    "password": "6d036e82af17a5d3b0d9f9c5d749e4a5",
     "firstName": "Lia",
     "registeredAt": "2026-01-28"
   },
   {
     "id": "u-006",
     "username": "omar.banks@example.com",
-    "password": "$2b$10$sd3ygy7WZoUwMgBmjGAHlujZrNoAjo5wJN7H/NJDgHGxJua48hp2G",
+    "password": "4abea3956cbf32070ac04a553caa5092",
     "firstName": "Omar",
     "registeredAt": "2026-02-14"
   },
   {
     "id": "u-007",
     "username": "talia.cho@example.com",
-    "password": "$2b$10$dixDATsDLhKRxaCsadSpLuL3Utfs4iv2GsPl/ExUXAcB3jmkrWtD2",
+    "password": "6e74dae8f243f97a8c7bccef4352092d",
     "firstName": "Talia",
     "registeredAt": "2026-03-03"
   },
   {
     "id": "u-008",
     "username": "riko.abe@example.com",
-    "password": "$2b$10$F1EP5p8P0evqn/GndY8AGOOMn3VaAFkZFAWwS5rXbfx/usbPIIDdu",
+    "password": "1b3202073857ec7288ff86bebe6082c8",
     "firstName": "Riko",
     "registeredAt": "2026-03-21"
   },
   {
     "id": "u-009",
     "username": "dara.ng@example.com",
-    "password": "$2b$10$zuFhAqFc4RZic/EFd.nPge95ys5ixU.n.Oy55ljbQLhLP2byPsHCK",
+    "password": "b2dd340e15636d0520e577a5f0c611c0",
     "firstName": "Dara",
     "registeredAt": "2026-04-06"
   },
   {
     "id": "u-010",
     "username": "peter.lane@example.com",
-    "password": "$2b$10$FfMb5R6pGbIJPS2HNOTbX.qjc94u8tTtPcQHtGl.5wPDoWhx5wfzG",
+    "password": "5dc454be96d4f3cf5a55dfebc018a837",
     "firstName": "Peter",
     "registeredAt": "2026-04-22"
   }
