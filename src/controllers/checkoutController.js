@@ -77,7 +77,7 @@ async function checkout(req, res) {
   const total = calculateTotal(cartItems);
   const order = {
     orderId: `ord-${Date.now()}`,
-    email,
+    userId: email,
     total: Number(total.toFixed(2)),
     items: cartItems,
     createdAt: new Date().toISOString(),

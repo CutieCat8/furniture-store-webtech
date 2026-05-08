@@ -118,5 +118,25 @@
       }
     ],
     "createdAt": "2026-05-06T08:46:47.062Z"
+  },
+  {
+    "orderId": "ord-1778226414283",
+    "email": "sea3731548@gmail.com",
+    "total": 277,
+    "items": [
+      {
+        "id": "p-002",
+        "title": "Kruzo Aero Chair",
+        "price": "$78.00",
+        "quantity": 3
+      },
+      {
+        "id": "p-003",
+        "title": "Ergonomic Chair",
+        "price": "$43.00",
+        "quantity": 1
+      }
+    ],
+    "createdAt": "2026-05-08T07:46:54.285Z"
   }
 ]

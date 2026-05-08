@@ -39,6 +39,7 @@
       if (payload.token) {
         localStorage.setItem("authToken", payload.token);
       }
+      localStorage.setItem("authEmail", emailInput.value.trim());
 
       setStatus("Login successful. Redirecting...", true);
       window.location.href = "shop.html";

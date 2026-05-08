@@ -1,0 +1,158 @@
+<!-- /*
+* Bootstrap 5
+* Template Name: Furni
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="favicon.png">
+
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap4" />
+
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="css/tiny-slider.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <title>Furni | Order History</title>
+</head>
+
+<body>
+  <!-- Start Header/Navigation -->
+  <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Furni<span>.</span></a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsFurni">
+        <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li><a class="nav-link" href="shop.html">Shop</a></li>
+          <li class="active"><a class="nav-link" href="order-history.html">Order History</a></li>
+          <li><a class="nav-link" href="about.html">About us</a></li>
+          <li><a class="nav-link" href="services.html">Services</a></li>
+          <li><a class="nav-link" href="blog.html">Blog</a></li>
+          <li><a class="nav-link" href="contact.html">Contact us</a></li>
+        </ul>
+
+        <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+          <li><a class="nav-link" href="login.html" aria-label="User account"><img src="images/user.svg" alt="User"></a></li>
+          <li><a class="nav-link" href="cart.html" aria-label="Shopping cart"><img src="images/cart.svg" alt="Cart"></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End Header/Navigation -->
+
+  <main class="account-shell">
+    <div class="container">
+      <div class="account-card">
+        <aside class="account-sidebar">
+          <div class="account-profile">
+            <div class="avatar-circle">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <div>
+              <p class="account-name" data-account-name>Customer</p>
+              <p class="account-email" data-account-email>user@example.com</p>
+            </div>
+          </div>
+          <nav class="account-nav">
+            <button class="account-link">Dashboard</button>
+            <button class="account-link is-active">Purchase History</button>
+            <button class="account-link">Subscriptions</button>
+            <button class="account-link">Downloads</button>
+            <button class="account-link">Profile</button>
+          </nav>
+        </aside>
+
+        <section class="account-content">
+          <div class="account-header">
+            <div>
+              <h2>Purchase History</h2>
+              <p>Review your recent orders and receipts.</p>
+            </div>
+            <div class="account-search">
+              <input type="text" placeholder="Search by email" data-orders-search>
+              <button type="button" data-orders-search-btn><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+          </div>
+
+          <div class="order-table" data-orders-table>
+            <div class="order-row order-head">
+              <span class="order-cell-select">
+                <input type="checkbox" aria-label="Select all" data-orders-select-all>
+              </span>
+              <span>Order</span>
+              <span>Items</span>
+              <span>Status</span>
+              <span>Amount</span>
+              <span></span>
+            </div>
+            <div class="order-empty" data-orders-empty>No orders found.</div>
+          </div>
+
+          <div class="order-actions">
+            <p class="order-actions-note" data-orders-status>Select orders to delete.</p>
+            <div class="order-actions-buttons">
+              <button type="button" class="order-action-btn ghost" data-orders-delete-selected disabled>Delete Selected</button>
+              <button type="button" class="order-action-btn danger" data-orders-delete-all>Delete All</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="receipt-modal" data-receipt-modal>
+    <div class="receipt-modal-card">
+      <button class="receipt-close" data-receipt-close aria-label="Close receipt">&times;</button>
+      <div class="receipt-card" data-receipt>
+        <div class="receipt-header">
+          <span>Furni</span>
+          <span class="receipt-title">Receipt</span>
+          <span>Order</span>
+        </div>
+        <div class="receipt-meta">
+          <div>Order ID: <strong data-receipt-order-id>--</strong></div>
+          <div>Date: <span data-receipt-date>--</span></div>
+          <div>Email: <span data-receipt-email>--</span></div>
+        </div>
+
+        <div class="receipt-divider"></div>
+        <div class="receipt-items" data-receipt-items></div>
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-row total">
+          <span>Total</span>
+          <span data-receipt-total>$0.00</span>
+        </div>
+        <div class="receipt-row">
+          <span>Card</span>
+          <span data-receipt-card>**** **** **** 0000</span>
+        </div>
+
+        <div class="receipt-thankyou">Thank you!</div>
+        <div class="receipt-barcode"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/tiny-slider.js"></script>
+  <script src="js/custom.js"></script>
+  <script src="js/order-history.js"></script>
+</body>
+</html>

@@ -3,6 +3,8 @@ const cors = require("cors");
 const productsRouter = require("./routes/products");
 const authRouter = require("./routes/auth");
 const checkoutRouter = require("./routes/checkout");
+const ordersRouter = require("./routes/orders");
+require("./db/sqlite");
 
 const app = express();
 
@@ -15,6 +17,7 @@ app.use(
 app.use("/api", productsRouter);
 app.use("/api", authRouter);
 app.use("/api", checkoutRouter);
+app.use("/api", ordersRouter);
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });

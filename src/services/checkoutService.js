@@ -1,38 +1,52 @@
-const fs = require("fs/promises");
-const path = require("path");
+const db = require("../db/sqlite");
+const { INSERT_ORDER_SQL } = require("../db/orderSql");
 
-const ORDERS_PATH = path.join(
-  __dirname,
-  "..",
-  "..",
-  "data",
-  "json",
-  "orders.json"
-);
+function runQuery(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function onRun(error) {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(this);
+    });
+  });
+}
 
-async function getOrders() {
-  try {
-    const fileContents = await fs.readFile(ORDERS_PATH, "utf-8");
-    const orders = JSON.parse(fileContents);
-
-    if (!Array.isArray(orders)) {
-      throw new Error("Orders data is not an array");
-    }
-
-    return orders;
-  } catch (error) {
-    if (error && error.code === "ENOENT") {
-      return [];
-    }
-
-    throw error;
+function normalizeNumber(value) {
+  if (typeof value === "number") {
+    return value;
   }
+
+  if (typeof value === "string") {
+    const cleaned = value.replace(/[^0-9.]/g, "");
+    return Number.parseFloat(cleaned) || 0;
+  }
+
+  return 0;
 }
 
 async function saveOrder(order) {
-  const orders = await getOrders();
-  orders.push(order);
-  await fs.writeFile(ORDERS_PATH, JSON.stringify(orders, null, 2));
+  const createdAt = new Date().toISOString();
+  const items = Array.isArray(order.items) ? order.items : [];
+  const orderId = order.orderId || `ord-${Date.now()}`;
+
+  const inserts = items.map((item) => {
+    const quantity = Number(item.quantity) || 0;
+    const price = normalizeNumber(item.price);
+    const totalPrice = price * quantity;
+
+    return runQuery(INSERT_ORDER_SQL, [
+      orderId,
+      order.userId,
+      item.id,
+      quantity,
+      Number(totalPrice.toFixed(2)),
+      createdAt,
+    ]);
+  });
+
+  await Promise.all(inserts);
 }
 
 module.exports = {

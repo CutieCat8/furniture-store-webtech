@@ -2,7 +2,7 @@
   {
     "id": "p-001",
     "href": "cart.html",
-    "image": "images/product-1.png",
+    "image": "images/product-nordic-chair.png",
     "title": "Nordic Chair",
     "price": "$50.00",
     "icon": "images/cross.svg"
@@ -10,7 +10,7 @@
   {
     "id": "p-002",
     "href": "cart.html",
-    "image": "images/product-2.png",
+    "image": "images/product-kruzo-aero-chair.png",
     "title": "Kruzo Aero Chair",
     "price": "$78.00",
     "icon": "images/cross.svg"
@@ -18,7 +18,7 @@
   {
     "id": "p-003",
     "href": "cart.html",
-    "image": "images/product-3.png",
+    "image": "images/product-ergonomic-chair.png",
     "title": "Ergonomic Chair",
     "price": "$43.00",
     "icon": "images/cross.svg"
@@ -26,7 +26,7 @@
   {
     "id": "p-004",
     "href": "cart.html",
-    "image": "images/product-1.png",
+    "image": "images/product-luna-lounge-chair.png",
     "title": "Luna Lounge Chair",
     "price": "$64.00",
     "icon": "images/cross.svg"
@@ -34,7 +34,7 @@
   {
     "id": "p-005",
     "href": "cart.html",
-    "image": "images/product-2.png",
+    "image": "images/product-harbor-side-chair.png",
     "title": "Harbor Side Chair",
     "price": "$55.00",
     "icon": "images/cross.svg"
@@ -42,7 +42,7 @@
   {
     "id": "p-006",
     "href": "cart.html",
-    "image": "images/product-3.png",
+    "image": "images/product-oakwood-armchair.png",
     "title": "Oakwood Armchair",
     "price": "$92.00",
     "icon": "images/cross.svg"
@@ -50,7 +50,7 @@
   {
     "id": "p-007",
     "href": "cart.html",
-    "image": "images/product-1.png",
+    "image": "images/product-sable-dining-chair.png",
     "title": "Sable Dining Chair",
     "price": "$48.00",
     "icon": "images/cross.svg"
@@ -58,7 +58,7 @@
   {
     "id": "p-008",
     "href": "cart.html",
-    "image": "images/product-2.png",
+    "image": "images/product-ivy-accent-chair.png",
     "title": "Ivy Accent Chair",
     "price": "$70.00",
     "icon": "images/cross.svg"
@@ -66,7 +66,7 @@
   {
     "id": "p-009",
     "href": "cart.html",
-    "image": "images/product-3.png",
+    "image": "images/product-metro-task-chair.png",
     "title": "Metro Task Chair",
     "price": "$58.00",
     "icon": "images/cross.svg"
@@ -74,7 +74,7 @@
   {
     "id": "p-010",
     "href": "cart.html",
-    "image": "images/product-1.png",
+    "image": "images/product-willow-rocking-chair.png",
     "title": "Willow Rocking Chair",
     "price": "$88.00",
     "icon": "images/cross.svg"
@@ -82,7 +82,7 @@
   {
     "id": "p-011",
     "href": "cart.html",
-    "image": "images/product-2.png",
+    "image": "images/product-arlo-side-chair.png",
     "title": "Arlo Side Chair",
     "price": "$52.00",
     "icon": "images/cross.svg"
@@ -90,7 +90,7 @@
   {
     "id": "p-012",
     "href": "cart.html",
-    "image": "images/product-3.png",
+    "image": "images/product-solace-lounge-chair.png",
     "title": "Solace Lounge Chair",
     "price": "$95.00",
     "icon": "images/cross.svg"
@@ -98,7 +98,7 @@
   {
     "id": "p-013",
     "href": "cart.html",
-    "image": "images/product-1.png",
+    "image": "images/product-echo-desk-chair.png",
     "title": "Echo Desk Chair",
     "price": "$60.00",
     "icon": "images/cross.svg"
@@ -106,7 +106,7 @@
   {
     "id": "p-014",
     "href": "cart.html",
-    "image": "images/product-2.png",
+    "image": "images/product-breeze-patio-chair.png",
     "title": "Breeze Patio Chair",
     "price": "$45.00",
     "icon": "images/cross.svg"
@@ -114,7 +114,7 @@
   {
     "id": "p-015",
     "href": "cart.html",
-    "image": "images/product-3.png",
+    "image": "images/product-cedar-armchair.png",
     "title": "Cedar Armchair",
     "price": "$76.00",
     "icon": "images/cross.svg"
@@ -122,7 +122,7 @@
   {
     "id": "p-016",
     "href": "cart.html",
-    "image": "images/product-1.png",
+    "image": "images/product-mira-accent-chair.png",
     "title": "Mira Accent Chair",
     "price": "$66.00",
     "icon": "images/cross.svg"
@@ -130,7 +130,7 @@
   {
     "id": "p-017",
     "href": "cart.html",
-    "image": "images/product-2.png",
+    "image": "images/product-horizon-lounge-chair.png",
     "title": "Horizon Lounge Chair",
     "price": "$110.00",
     "icon": "images/cross.svg"
@@ -138,7 +138,7 @@
   {
     "id": "p-018",
     "href": "cart.html",
-    "image": "images/product-3.png",
+    "image": "images/product-piper-dining-chair.png",
     "title": "Piper Dining Chair",
     "price": "$49.00",
     "icon": "images/cross.svg"
@@ -146,7 +146,7 @@
   {
     "id": "p-019",
     "href": "cart.html",
-    "image": "images/product-1.png",
+    "image": "images/product-summit-task-chair.png",
     "title": "Summit Task Chair",
     "price": "$72.00",
     "icon": "images/cross.svg"
@@ -154,7 +154,7 @@
   {
     "id": "p-020",
     "href": "cart.html",
-    "image": "images/product-2.png",
+    "image": "images/product-aster-lounge-chair.png",
     "title": "Aster Lounge Chair",
     "price": "$84.00",
     "icon": "images/cross.svg"
