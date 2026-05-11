@@ -1,32 +1,23 @@
 const checkoutService = require("../services/checkoutService");
+const productsService = require("../services/productsService");
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function normalizePrice(value) {
-  if (typeof value === "number") {
-    return value;
-  }
-
-  if (typeof value === "string") {
-    const cleaned = value.replace(/[^0-9.]/g, "");
-    const parsed = Number.parseFloat(cleaned);
-    return Number.isFinite(parsed) ? parsed : NaN;
-  }
-
-  return NaN;
-}
-
-function validateCartItems(items) {
+function validateCartItems(items, productsById) {
   if (!Array.isArray(items) || items.length === 0) {
     return "Cart is empty";
   }
 
+  if (items.length > 50) {
+    return "Cart has too many items";
+  }
+
   for (const item of items) {
-    const price = normalizePrice(item.price);
+    const product = productsById[item.id];
     const quantity = Number(item.quantity);
 
-    if (!Number.isFinite(price) || price <= 0) {
-      return "Cart item price is invalid";
+    if (!product) {
+      return "Cart item product is invalid";
     }
 
     if (!Number.isFinite(quantity) || quantity <= 0) {
@@ -37,27 +28,51 @@ function validateCartItems(items) {
   return null;
 }
 
-function calculateTotal(items) {
+function calculateTotal(items, productsById) {
   return items.reduce((sum, item) => {
-    const price = normalizePrice(item.price);
-    const quantity = Number(item.quantity);
+    const product = productsById[item.id];
+    const price = Number(product.price) || 0;
+    const quantity = Number(item.quantity) || 0;
     return sum + price * quantity;
   }, 0);
+}
+
+function buildServerCartItems(items, productsById) {
+  return items.map((item) => {
+    const product = productsById[item.id];
+    return {
+      id: item.id,
+      title: product.title || "Product",
+      price: product.price,
+      quantity: Number(item.quantity) || 0,
+    };
+  });
 }
 
 async function checkout(req, res) {
   const { cartItems, email, cardNumber } = req.body || {};
   const errors = {};
+  const authEmail = req.user && req.user.email ? String(req.user.email) : null;
+  const resolvedEmail = authEmail || email;
+  const products = await productsService.getAllProducts();
+  const productsById = products.reduce((acc, product) => {
+    acc[product.id] = product;
+    return acc;
+  }, {});
 
   // Gatekeeper 1: cart must contain items.
-  const cartError = validateCartItems(cartItems);
+  const cartError = validateCartItems(cartItems, productsById);
   if (cartError) {
     errors.cartItems = cartError;
   }
 
   // Gatekeeper 2: email must be valid.
-  if (!email || !EMAIL_REGEX.test(String(email))) {
+  if (!resolvedEmail || !EMAIL_REGEX.test(String(resolvedEmail))) {
     errors.email = "Email is invalid";
+  }
+
+  if (authEmail && email && authEmail !== String(email)) {
+    errors.email = "Email does not match authenticated user";
   }
 
   // Gatekeeper 3: credit card must be 16 digits.
@@ -74,12 +89,13 @@ async function checkout(req, res) {
     });
   }
 
-  const total = calculateTotal(cartItems);
+  const total = calculateTotal(cartItems, productsById);
+  const serverItems = buildServerCartItems(cartItems, productsById);
   const order = {
     orderId: `ord-${Date.now()}`,
-    userId: email,
+    userId: resolvedEmail,
     total: Number(total.toFixed(2)),
-    items: cartItems,
+    items: serverItems,
     createdAt: new Date().toISOString(),
   };
 

@@ -458,6 +458,13 @@
 			setStatus('Placing order...', false);
 
 			var cartItems = getCart();
+			var token = localStorage.getItem('authToken');
+			var headers = {
+				'Content-Type': 'application/json'
+			};
+			if (token) {
+				headers.Authorization = 'Bearer ' + token;
+			}
 			var payload = {
 				cartItems: buildCheckoutItems(cartItems),
 				email: emailInput.value.trim(),
@@ -466,9 +473,7 @@
 
 			fetch('http://localhost:3000/api/checkout', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
+				headers: headers,
 				body: JSON.stringify(payload)
 			})
 				.then(function(response) {
