@@ -4,6 +4,7 @@ const productsRouter = require("./routes/products");
 const authRouter = require("./routes/auth");
 const checkoutRouter = require("./routes/checkout");
 const ordersRouter = require("./routes/orders");
+const userServiceMockRouter = require("./routes/userServiceMock");
 require("./db/sqlite");
 
 const app = express();
@@ -18,6 +19,7 @@ app.use("/api", productsRouter);
 app.use("/api", authRouter);
 app.use("/api", checkoutRouter);
 app.use("/api", ordersRouter);
+app.use(userServiceMockRouter);
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });

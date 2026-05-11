@@ -4,6 +4,30 @@ const jwt = require("jsonwebtoken");
 const authService = require("../services/authService");
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
+const USER_SERVICE_URL =
+  process.env.USER_SERVICE_URL ||
+  "http://localhost:3000/mock/user-service/verify";
+
+async function fetchUserByEmail(email) {
+  try {
+    const response = await fetch(USER_SERVICE_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const payload = await response.json();
+    return payload && payload.data ? payload.data : null;
+  } catch (error) {
+    return null;
+  }
+}
 
 async function login(req, res) {
   try {
@@ -18,7 +42,7 @@ async function login(req, res) {
     }
 
     // Gatekeeper: reject if the user does not exist in users.json.
-    const user = await authService.findUserByEmail(email);
+    const user = await fetchUserByEmail(email);
     if (!user) {
       return res.status(401).json({
         status: "fail",

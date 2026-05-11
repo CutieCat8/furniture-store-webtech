@@ -1,41 +1,9 @@
 const ordersService = require("../services/ordersService");
 
-function groupOrders(rows) {
-  const ordersById = new Map();
-
-  rows.forEach((row) => {
-    const orderId = row.order_id || `legacy-${row.row_id}`;
-    if (!ordersById.has(orderId)) {
-      ordersById.set(orderId, {
-        orderId,
-        email: row.user_id,
-        createdAt: row.created_at,
-        total: 0,
-        items: [],
-      });
-    }
-
-    const order = ordersById.get(orderId);
-    const lineTotal = Number(row.total_price) || 0;
-    order.total += lineTotal;
-    order.items.push({
-      productId: row.product_id,
-      quantity: Number(row.quantity) || 0,
-      totalPrice: lineTotal,
-    });
-  });
-
-  return Array.from(ordersById.values()).map((order) => ({
-    ...order,
-    total: Number(order.total.toFixed(2)),
-  }));
-}
-
 async function listOrders(req, res) {
   try {
     const email = String(req.query.email || "").trim() || null;
-    const rows = await ordersService.queryOrdersByEmail(email);
-    const orders = groupOrders(rows);
+    const orders = await ordersService.listOrders(email);
 
     return res.status(200).json({
       status: "success",
@@ -59,7 +27,7 @@ async function deleteOrdersForEmail(req, res) {
   }
 
   try {
-    const deleted = await ordersService.deleteOrdersByEmail(email);
+    const deleted = await ordersService.deleteOrdersForEmail(email);
     return res.status(200).json({
       status: "success",
       deleted,
@@ -84,7 +52,7 @@ async function deleteSelectedOrders(req, res) {
   }
 
   try {
-    const deleted = await ordersService.deleteOrdersByIds(orderIds, email);
+    const deleted = await ordersService.deleteSelectedOrders(orderIds, email);
     return res.status(200).json({
       status: "success",
       deleted,

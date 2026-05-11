@@ -1,75 +1,51 @@
-const db = require("../db/sqlite");
+const ordersRepository = require("../repositories/ordersRepository");
 
-function runQuery(sql, params) {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function onRun(error) {
-      if (error) {
-        reject(error);
-        return;
-      }
-      resolve(this.changes || 0);
+function groupOrders(rows) {
+  const ordersById = new Map();
+
+  rows.forEach((row) => {
+    const orderId = row.order_id || `legacy-${row.row_id}`;
+    if (!ordersById.has(orderId)) {
+      ordersById.set(orderId, {
+        orderId,
+        email: row.user_id,
+        createdAt: row.created_at,
+        total: 0,
+        items: [],
+      });
+    }
+
+    const order = ordersById.get(orderId);
+    const lineTotal = Number(row.total_price) || 0;
+    order.total += lineTotal;
+    order.items.push({
+      productId: row.product_id,
+      quantity: Number(row.quantity) || 0,
+      totalPrice: lineTotal,
     });
   });
+
+  return Array.from(ordersById.values()).map((order) => ({
+    ...order,
+    total: Number(order.total.toFixed(2)),
+  }));
 }
 
-function queryOrdersByEmail(email) {
-  const sql =
-    "SELECT rowid as row_id, order_id, user_id, product_id, quantity, total_price, created_at FROM orders " +
-    "WHERE (? IS NULL OR user_id = ?) ORDER BY created_at DESC";
-  const params = [email || null, email || null];
-
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, (error, rows) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-      resolve(rows || []);
-    });
-  });
+async function listOrders(email) {
+  const rows = await ordersRepository.queryOrdersByEmail(email);
+  return groupOrders(rows);
 }
 
-function deleteOrdersByEmail(email) {
-  return runQuery("DELETE FROM orders WHERE user_id = ?", [email]);
+async function deleteOrdersForEmail(email) {
+  return ordersRepository.deleteOrdersByEmail(email);
 }
 
-function deleteOrdersByIds(orderIds, email) {
-  const legacyRowIds = orderIds
-    .filter((id) => typeof id === "string" && id.startsWith("legacy-"))
-    .map((id) => Number(id.replace("legacy-", "")))
-    .filter((id) => Number.isFinite(id));
-
-  const standardOrderIds = orderIds.filter(
-    (id) => typeof id === "string" && !id.startsWith("legacy-")
-  );
-
-  const tasks = [];
-
-  if (standardOrderIds.length) {
-    const placeholders = standardOrderIds.map(() => "?").join(",");
-    const sql = `DELETE FROM orders WHERE order_id IN (${placeholders})${
-      email ? " AND user_id = ?" : ""
-    }`;
-    const params = email ? [...standardOrderIds, email] : standardOrderIds;
-    tasks.push(runQuery(sql, params));
-  }
-
-  if (legacyRowIds.length) {
-    const placeholders = legacyRowIds.map(() => "?").join(",");
-    const sql = `DELETE FROM orders WHERE rowid IN (${placeholders})${
-      email ? " AND user_id = ?" : ""
-    }`;
-    const params = email ? [...legacyRowIds, email] : legacyRowIds;
-    tasks.push(runQuery(sql, params));
-  }
-
-  return Promise.all(tasks).then((changes) =>
-    changes.reduce((sum, value) => sum + value, 0)
-  );
+async function deleteSelectedOrders(orderIds, email) {
+  return ordersRepository.deleteOrdersByIds(orderIds, email);
 }
 
 module.exports = {
-  queryOrdersByEmail,
-  deleteOrdersByEmail,
-  deleteOrdersByIds,
+  listOrders,
+  deleteOrdersForEmail,
+  deleteSelectedOrders,
 };

@@ -1,17 +1,4 @@
-const db = require("../db/sqlite");
-const { INSERT_ORDER_SQL } = require("../db/orderSql");
-
-function runQuery(sql, params) {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function onRun(error) {
-      if (error) {
-        reject(error);
-        return;
-      }
-      resolve(this);
-    });
-  });
-}
+const ordersRepository = require("../repositories/ordersRepository");
 
 function normalizeNumber(value) {
   if (typeof value === "number") {
@@ -31,22 +18,24 @@ async function saveOrder(order) {
   const items = Array.isArray(order.items) ? order.items : [];
   const orderId = order.orderId || `ord-${Date.now()}`;
 
-  const inserts = items.map((item) => {
+  const normalizedItems = items.map((item) => {
     const quantity = Number(item.quantity) || 0;
     const price = normalizeNumber(item.price);
     const totalPrice = price * quantity;
 
-    return runQuery(INSERT_ORDER_SQL, [
-      orderId,
-      order.userId,
-      item.id,
+    return {
+      productId: item.id,
       quantity,
-      Number(totalPrice.toFixed(2)),
-      createdAt,
-    ]);
+      totalPrice: Number(totalPrice.toFixed(2)),
+    };
   });
 
-  await Promise.all(inserts);
+  await ordersRepository.insertOrderItems(
+    orderId,
+    order.userId,
+    normalizedItems,
+    createdAt
+  );
 }
 
 module.exports = {
